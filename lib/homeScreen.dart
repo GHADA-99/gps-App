@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
@@ -19,6 +17,8 @@ class HomeScreen extends StatelessWidget {
   Location location = Location();
   late PermissionStatus permissionStatus;
   bool serviceEnabled=false;
+  //3lchan mmkn b3d el permission and enable el service me3rfch ygeb user location(Location data)
+  LocationData? locationData = null;
 
   //two main object {permission to use gps to get your location,enable GPS service 3la mobile}
   Future<bool> isPermissionGranted() async {
@@ -37,7 +37,13 @@ class HomeScreen extends StatelessWidget {
     }
       return serviceEnabled;
   }
-  void getUserLocation(){
+  void getUserLocation()async{
+   bool gpsEnabled= await isServiceEnabled();
+   bool permissionGranted=await isPermissionGranted();
+   if(gpsEnabled&&permissionGranted){
+     locationData=await location.getLocation();
+    print("${locationData?.longitude},,${locationData?.latitude}");
+   }
 
   }
 }
